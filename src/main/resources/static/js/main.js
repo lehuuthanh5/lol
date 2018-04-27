@@ -93,7 +93,10 @@ function onMessageReceived(payload) {
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
     }
-
+	if (document.hidden) {
+		var audio = new Audio('/sound/plucky.mp3');
+		audio.play();
+	}
     var textElement = document.createElement('p');
     var messageText = document.createTextNode(message.content);
     textElement.appendChild(messageText);
