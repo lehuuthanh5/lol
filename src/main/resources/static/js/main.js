@@ -7,6 +7,7 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+var audio = new Audio('/sound/plucky.mp3');
 
 var stompClient = null;
 var username = null;
@@ -37,7 +38,7 @@ function onConnected() {
     stompClient.subscribe('/topic/public', onMessageReceived);
 
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send("/app/chat.addUser/public",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
     )
@@ -60,7 +61,7 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/chat.sendMessage/public", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -94,7 +95,6 @@ function onMessageReceived(payload) {
         messageElement.appendChild(usernameElement);
     }
 	if (document.hidden) {
-		var audio = new Audio('/sound/plucky.mp3');
 		audio.play();
 	}
     var textElement = document.createElement('p');
